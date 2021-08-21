@@ -1,0 +1,96 @@
+<html lang="en-us">
+<head>
+				<link rel="stylesheet" href="/storage/emulated/0/1 html/advance code/icon/css/all.min.css">
+
+  <title>no-crash-soft | handwriting</title>
+    
+</head>
+<body style="height: 100%; overflow:hidden;">
+
+
+<h2 id="cid"></h2>
+<div>
+  <span style="display : inline-block">
+  				  result: <span id="result"></span>
+  </span>
+  <b>
+  <br>
+  <br>
+   <span>PenSize</span><input type="range" id="penSize" min="1" max="30" value="3">
+    <br>
+    <!--button start hear -->
+    
+    <div style="display:flex">
+    
+    <button style="margin:10px;"  type="button" onclick="canvas.erase(); resultRefresh();"><i class="fas fa-trash-alt fa-2x"></i></button>
+    <button style="margin:10px;"  type="button" onclick="resultSend();"><i class="fas fa-paper-plane fa-2x"></i></button>
+    <button style="margin:10px;"  type="button" onclick="canvas.undo()"><i class="fas fa-undo fa-2x"></i></button>
+    <button style="margin:10px;" type="button" onclick="canvas.redo()"><i class="fas fa-redo fa-2x"></i></button>
+
+    <form style="margin:10px">
+      Language:<br>
+      <select id="language">
+        <option value="en" selected="selected">English</option>
+        <option value="bn">Bangla</option>
+      </select>
+    </form>
+</div>
+<!--button end hear -->
+ <!--canvas start here-->
+
+    <canvas id="canvas" width="400" height="400" style="border: 2px solid; cursor: crosshair;"></canvas>
+ <!--canvas start here-->
+
+    <br> <br>
+  
+  <script type="text/javascript" src="handwriting.js"></script>
+  
+  <script type="text/javascript" defer="">
+    var canvas = new handwriting.Canvas(document.getElementById('canvas'), 3);
+    var width = document.getElementById("cid").clientWidth;
+    canvas.cxt.canvas.width  = width < 400 ? width : 400;
+    canvas.cxt.canvas.height = width < 400 ? width : 400;
+    canvas.setCallBack(function(data, err) {
+      if (err) throw err;
+      else document.getElementById("result").innerHTML = data[0];
+	   console.log(data);
+      
+      var str=data[0];  
+     // var silent =   new Audio('ms_1000.mp3');
+      for(var i=0; i<str.length;i++)
+         {
+            var audio = new Audio(str.charAt(i).toUpperCase() + '.wav');
+            audio.play(); 
+           // silent.play();       
+         };
+
+    });
+
+    canvas.set_Undo_Redo(true, true);
+    var penSize = document.getElementById("penSize");
+    penSize.addEventListener("mousemove", function() {
+      document.getElementById("lineWidth").innerHTML = penSize.value;
+    });
+    penSize.addEventListener("change", function(){
+      canvas.setLineWidth(penSize.value);
+    });
+
+  </script>
+  
+  <script type="text/javascript"> 
+	function resultRefresh(){
+		document.getElementById("result").innerHTML = '';
+	};	
+	
+	function resultSend(){
+	  var e = document.getElementById('language');
+      canvas.setOptions({language: e.options[e.selectedIndex].value});
+      canvas.recognize();
+	};
+
+  </script>
+</div>
+
+</body>
+</html>
+  
