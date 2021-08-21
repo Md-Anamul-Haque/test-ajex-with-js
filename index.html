@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="demo">
+<h2>If you want to write by hand, touch the button below.</h2>
+<button type="button" onclick="loadDoc()">Click to write.</button>
+</div>
+
+<script>
+function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function() {
+    document.getElementById("demo").innerHTML =
+    this.responseText;
+  }
+  xhttp.open("GET", "handwriting.html");
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>
